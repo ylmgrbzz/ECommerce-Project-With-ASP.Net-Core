@@ -52,9 +52,19 @@ namespace DataAccess.Concrete.InMemory
             return _products;
         }
 
+        public List<Product> GetAllByCategory(int categoryId)
+        {
+            // Where koşulu içindeki şarta uyan bütün elemanları yeni bir liste haline getirir ve onu döndürür.
+            return _products.Where(p => p.CategoryId == categoryId).ToList(); // LINQ - Language Integrated Query
+        }
+
         public void Update(Product product)
         {
             Product productToUpdate = _products.SingleOrDefault(p => p.ProductId == product.ProductId); // LINQ - Language Integrated Query
+            productToUpdate.ProductName = product.ProductName;
+            productToUpdate.CategoryId = product.CategoryId;
+            productToUpdate.UnitPrice = product.UnitPrice;
+            productToUpdate.UnitsInStock = product.UnitsInStock;
         }
     }
 }
