@@ -27,22 +27,34 @@ namespace DataAccess.Concrete.InMemory
 
         public void Add(Product product)
         {
-            throw new NotImplementedException();
+            _products.Add(product);
         }
 
         public void Delete(Product product)
         {
-            throw new NotImplementedException();
+            //Product productToDelete = null; // Referans tip olduğu için null ataması yapılır.
+            //foreach (var p in _products)
+            //{
+            //    if (product.ProductId == p.ProductId)
+            //    {
+            //        productToDelete = p;
+            //    }
+            //}
+            Product productToDelete = _products.SingleOrDefault(p => p.ProductId == product.ProductId); // LINQ - Language Integrated Query
+
+            _products.Remove(productToDelete);
+
+            //_products[product.CategoryId] = product;
         }
 
         public List<Product> GetAll()
         {
-            throw new NotImplementedException();
+            return _products;
         }
 
         public void Update(Product product)
         {
-            throw new NotImplementedException();
+            Product productToUpdate = _products.SingleOrDefault(p => p.ProductId == product.ProductId); // LINQ - Language Integrated Query
         }
     }
 }
