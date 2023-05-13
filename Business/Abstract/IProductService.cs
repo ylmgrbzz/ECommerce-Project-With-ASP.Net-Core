@@ -14,12 +14,14 @@ namespace Business.Abstract
         //List<Product> GetAll();
         //void Update(Product product);
         //void Delete(Product product);
+        IDataResult<List<Product>> GetAll();
+        IDataResult<List<Product>> GetAllByCategoryId(int id);
+        IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max);
+        IDataResult<List<ProductDetailDto>> GetProductDetails();
+        IDataResult<Product> GetById();
+        // bunda data yok çünkü void döndürüyor. 
         IResult Add(Product product);
-        List<Product> GetAll();
-        List<Product> GetAllByCategoryId(int id);
-        List<Product> GetByUnitPrice(decimal min, decimal max);
 
-        List<ProductDetailDto> GetProductDetails();
-        Product GetById(int productId);
+
     }
 }
