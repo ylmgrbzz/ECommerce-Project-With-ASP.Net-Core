@@ -11,16 +11,14 @@ namespace Business.Abstract
     public interface IProductService
     {
         //List<Product> GetAll();
-        //void Add(Product product);
         //void Update(Product product);
         //void Delete(Product product);
+        void Add(Product product);
         List<Product> GetAll();
         List<Product> GetAllByCategoryId(int id);
         List<Product> GetByUnitPrice(decimal min, decimal max);
 
         List<ProductDetailDto> GetProductDetails();
-
-
-        //Product GetById(int productId);
+        Product GetById(int productId);
     }
 }
