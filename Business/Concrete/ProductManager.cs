@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -20,7 +21,7 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-        public void Add(Product product)
+        public IResult Add(Product product)
         {
             if (product.ProductName.Length < 2)
             {
@@ -29,6 +30,7 @@ namespace Business.Concrete
                 throw new Exception("Ürün ismi en az 2 karakter olmalıdır.");
             }
             _productDal.Add(product);
+            return new Result(true, "ürün eklendi");
         }
 
         public List<Product> GetAll()
