@@ -18,7 +18,7 @@ namespace Business.Abstract
         IDataResult<List<Product>> GetAllByCategoryId(int id);
         IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max);
         IDataResult<List<ProductDetailDto>> GetProductDetails();
-        IDataResult<Product> GetById();
+        IDataResult<Product> GetById(int productId);
         // bunda data yok çünkü void döndürüyor. 
         IResult Add(Product product);
 
