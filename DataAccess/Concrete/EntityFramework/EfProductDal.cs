@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,27 +14,54 @@ namespace DataAccess.Concrete.EntityFramework
     {
         public void Add(Product entity)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                // Referansı yakala, ekle ve kaydet.
+                var addedEntity = context.Entry(entity);
+                //addedEntity.State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                addedEntity.State = EntityState.Added;
+                context.SaveChanges();
+            }
         }
 
         public void Delete(Product entity)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                var deletedEntity = context.Entry(entity);
+                deletedEntity.State = EntityState.Deleted;
+                context.SaveChanges();
+
+            }
         }
 
         public Product Get(Expression<Func<Product, bool>> filter)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                // Filtreyi uygula ve tek bir datayı getir.
+                return context.Set<Product>().SingleOrDefault(filter);
+            }
         }
 
         public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                // Eğer filtre null ise tüm datayı getir, değilse filtreleyip getir.
+                return filter == null ? context.Set<Product>().ToList() : context.Set<Product>().Where(filter).ToList();
+            }
         }
 
         public void Update(Product entity)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                var updatedEntity = context.Entry(entity);
+                updatedEntity.State = EntityState.Modified;
+                context.SaveChanges();
+
+            }
         }
     }
 }
