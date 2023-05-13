@@ -25,12 +25,10 @@ namespace Business.Concrete
         {
             if (product.ProductName.Length < 2)
             {
-                //magic string
-                //magic number
-                throw new Exception("Ürün ismi en az 2 karakter olmalıdır.");
+                return new ErrorResult("ürün ismi en az 2 karakter olmalıdır");
             }
             _productDal.Add(product);
-            return new Result(true, "ürün eklendi");
+            return new SuccessResult("ürün eklendi");
         }
 
         public List<Product> GetAll()
