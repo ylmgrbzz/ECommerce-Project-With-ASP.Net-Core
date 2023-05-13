@@ -13,7 +13,7 @@ namespace DataAccess.Concrete.EntityFramework
     // This class is used to connect to the database.
     // It is derived from DbContext class.
     // context : db tabloları ile proje classlarını bağlamak.
-    internal class NorthwindContext : DbContext
+    public class NorthwindContext : DbContext
 
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -26,6 +26,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
 
     }
