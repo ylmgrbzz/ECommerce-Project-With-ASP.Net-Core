@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public List<Product> Get()
+        public /*List<Product>*/ IActionResult Get()
 
         {
 
@@ -32,7 +32,30 @@ namespace WebAPI.Controllers
             // };
             //IProductService productService = new ProductManager(new EfProductDal());
             var result = _productService.GetAll();
-            return result.Data;
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Post(Product product)
+        {
+            //IProductService productService = new ProductManager(new EfProductDal());
+            var result = _productService.Add(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
         }
     }
 }
