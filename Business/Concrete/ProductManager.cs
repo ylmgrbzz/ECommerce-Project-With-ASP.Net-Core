@@ -32,8 +32,6 @@ namespace Business.Concrete
             //    return new ErrorResult(Messages.ProductNameInvalid);
             //}
 
-
-
             ValidationTool.Validate(new ProductValidator(), product);
 
             _productDal.Add(product);
