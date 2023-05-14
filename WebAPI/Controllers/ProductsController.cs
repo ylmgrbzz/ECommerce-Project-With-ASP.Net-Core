@@ -20,8 +20,8 @@ namespace WebAPI.Controllers
             _productService = productService;
         }
 
-        [HttpGet]
-        public /*List<Product>*/ IActionResult Get()
+        [HttpGet("getall")] // api/products/getall
+        public /*List<Product>*/ IActionResult GetAll()
 
         {
 
@@ -43,8 +43,24 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult Post(Product product)
+        [HttpGet("getbyid")]  // api/products/getbyid?id=1
+        public IActionResult GetById(int id)
+        {
+            //IProductService productService = new ProductManager(new EfProductDal());
+            var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
+
+        }
+
+        [HttpPost("add")] // api/products/add
+        public IActionResult Add(Product product)
         {
             //IProductService productService = new ProductManager(new EfProductDal());
             var result = _productService.Add(product);
