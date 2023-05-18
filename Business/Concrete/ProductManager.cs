@@ -22,12 +22,14 @@ namespace Business.Concrete
 
     {
         IProductDal _productDal;
-        ILogger _logger;
+        //ILogger _logger;
 
-        public ProductManager(IProductDal productDal, ILogger Logger)
+        public ProductManager(IProductDal productDal,
+            //ILogger logger
+            )
         {
             _productDal = productDal;
-            _logger = logger;
+            //_logger = logger;
 
         }
 
@@ -41,10 +43,18 @@ namespace Business.Concrete
 
             //ValidationTool.Validate(new ProductValidator(), product);
 
-            _productDal.Add(product);
+            try
+            {
+                _productDal.Add(product);
+                return new SuccessResult(Messages.ProductAdded);
+            }
+            catch (Exception exception)
+            {
+                //_logger.Log();
+            }
 
+            return new ErrorResult();
 
-            return new SuccessResult(Messages.ProductAdded);
         }
 
         public IDataResult<List<Product>> GetAll()
@@ -84,7 +94,6 @@ namespace Business.Concrete
             //}
 
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
-
         }
     }
 }
