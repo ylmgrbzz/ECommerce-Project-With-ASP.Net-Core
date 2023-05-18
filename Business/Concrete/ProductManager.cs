@@ -33,7 +33,7 @@ namespace Business.Concrete
 
         }
 
-        //[ValidationAspect(typeof(ProductValidator))]
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
             //if (product.ProductName.Length < 2)
@@ -43,17 +43,18 @@ namespace Business.Concrete
 
             //ValidationTool.Validate(new ProductValidator(), product);
 
-            try
+
+            if (CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success)
             {
-                _productDal.Add(product);
-                return new SuccessResult(Messages.ProductAdded);
-            }
-            catch (Exception exception)
-            {
-                //_logger.Log();
+                if (CheckIfProductNameExists(product.ProductName).Success)
+                {
+                    _productDal.Add(product);
+                    return new SuccessResult(Messages.ProductAdded);
+                }
+                return new ErrorResult();
             }
 
-            return new ErrorResult();
+
 
         }
 
@@ -94,6 +95,31 @@ namespace Business.Concrete
             //}
 
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
+        }
+
+        [ValidationAspect(typeof(ProductValidator))]
+        public IResult Update(Product product)
+        {
+            //ValidationTool.Validate(new ProductValidator(), product);
+
+            var result = _productDal.GetAll(p => p.CategoryId == product.CategoryId).Count;
+            if (result >= 10)
+            {
+                return new ErrorResult(Messages.ProductCountOfCategoryError);
+            }
+
+            _productDal.Update(product);
+            return new SuccessResult(Messages.ProductAdded);
+        }
+        private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
+        {
+            //Select count(*) from products where categoryId=1
+            var result = _productDal.GetAll(p => p.CategoryId == categoryId).Count;
+            if (result >= 10)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
         }
     }
 }
