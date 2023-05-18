@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -21,12 +22,16 @@ namespace Business.Concrete
 
     {
         IProductDal _productDal;
-        public ProductManager(IProductDal productDal)
+        ILogger _logger;
+
+        public ProductManager(IProductDal productDal, ILogger Logger)
         {
             _productDal = productDal;
+            _logger = logger;
+
         }
 
-        [ValidationAspect(typeof(ProductValidator))]
+        //[ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
             //if (product.ProductName.Length < 2)
@@ -36,7 +41,9 @@ namespace Business.Concrete
 
             //ValidationTool.Validate(new ProductValidator(), product);
 
-            //_productDal.Add(product);
+            _productDal.Add(product);
+
+
             return new SuccessResult(Messages.ProductAdded);
         }
 
