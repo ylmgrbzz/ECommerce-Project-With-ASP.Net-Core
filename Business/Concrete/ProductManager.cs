@@ -131,10 +131,10 @@ namespace Business.Concrete
 
         private IResult CheckIfCategoryLimitExceded()
         {
-            var result = _productDal.GetAll().Count;
-            if (result >= 15)
+            var result = _categoryService.GetAll();
+            if (result.Data.Count > 15)
             {
-                return new ErrorResult();
+                return new ErrorResult(Messages.CategoryLimitExceded);
             }
             return new SuccessResult();
         }
