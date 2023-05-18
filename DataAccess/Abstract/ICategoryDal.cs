@@ -10,6 +10,7 @@ namespace DataAccess.Abstract
 {
     public interface ICategoryDal : IEntityRepository<Category>
     {
+        //Category GetById(int categoryId);
 
     }
 }

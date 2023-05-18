@@ -7,6 +7,7 @@ using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -23,13 +24,18 @@ namespace Business.Concrete
 
     {
         IProductDal _productDal;
+        //ICategoryDal _categoryDal;
         //ILogger _logger;
-
+        ICategoryService _categoryService;
         public ProductManager(IProductDal productDal,
+            ICategoryService categoryService
+            //ICategoryDal categoryDal
             //ILogger logger
             )
         {
             _productDal = productDal;
+            _categoryService = categoryService;
+            //_categoryDal = categoryDal;
             //_logger = logger;
         }
 
@@ -43,7 +49,8 @@ namespace Business.Concrete
             //ValidationTool.Validate(new ProductValidator(), product);
 
             IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName),
-                                CheckIfProductCountOfCategoryCorrect(product.CategoryId));
+                                CheckIfProductCountOfCategoryCorrect(product.CategoryId),
+                                CheckIfCategoryLimitExceded());
 
             if (result != null)
             {
@@ -118,6 +125,16 @@ namespace Business.Concrete
             if (result)
             {
                 return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfCategoryLimitExceded()
+        {
+            var result = _productDal.GetAll().Count;
+            if (result >= 15)
+            {
+                return new ErrorResult();
             }
             return new SuccessResult();
         }
